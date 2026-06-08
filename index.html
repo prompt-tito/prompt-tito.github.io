@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Promptito · IA para Todos — Aprende a usar inteligencia artificial sin complicaciones. Recursos, prompts y herramientas para humanos reales.">
+<meta property="og:title" content="Promptito · IA para Todos">
+<meta property="og:description" content="La IA no es complicada. Solo nadie te la había explicado bien.">
+<meta property="og:url" content="https://prompt-tito.github.io">
+<title>Promptito · IA para Todos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0e0d;
+    --bg2: #1a1916;
+    --bg3: #232220;
+    --amber: #f5a623;
+    --amber-dim: #c47d0e;
+    --amber-glow: rgba(245,166,35,0.12);
+    --text: #f0ede8;
+    --muted: #8a8680;
+    --border: rgba(255,255,255,0.08);
+    --radius: 14px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,14,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span { color: var(--amber); }
+
+  nav a.nav-cta {
+    background: var(--amber);
+    color: #0f0e0d;
+    font-weight: 500;
+    font-size: 0.85rem;
+    padding: 0.45rem 1.1rem;
+    border-radius: 99px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  nav a.nav-cta:hover { background: #f7b84a; }
+
+  /* HERO */
+  .hero {
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 1.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(245,166,35,0.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--amber-glow);
+    border: 1px solid rgba(245,166,35,0.3);
+    color: var(--amber);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.35rem 1rem;
+    border-radius: 99px;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    max-width: 820px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--amber);
+  }
+
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--muted);
+    max-width: 540px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--amber);
+    color: #0f0e0d;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.85rem 2rem;
+    border-radius: 99px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover { background: #f7b84a; transform: translateY(-1px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.85rem 2rem;
+    border-radius: 99px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.15s;
+  }
+
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+
+  .hero-proof {
+    margin-top: 3.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .proof-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #3ecf6e;
+    box-shadow: 0 0 6px #3ecf6e;
+    flex-shrink: 0;
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 5rem 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.75rem;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .section-intro {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  /* PRODUCTOS */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .product-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card:hover {
+    border-color: rgba(245,166,35,0.4);
+    transform: translateY(-3px);
+  }
+
+  .product-card.featured {
+    border-color: rgba(245,166,35,0.35);
+    background: linear-gradient(135deg, #1a1916 60%, rgba(245,166,35,0.06));
+  }
+
+  .product-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.7rem;
+    border-radius: 99px;
+    margin-bottom: 1.2rem;
+  }
+
+  .tag-live {
+    background: rgba(62,207,110,0.15);
+    color: #3ecf6e;
+    border: 1px solid rgba(62,207,110,0.3);
+  }
+
+  .tag-soon {
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .product-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .product-card p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .product-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 1.25rem;
+  }
+
+  .product-price span {
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* REDES */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .social-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .social-card:hover {
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .social-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .icon-tiktok { background: #1a1a2e; }
+  .icon-youtube { background: #1f0f0f; }
+
+  .social-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .social-card p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* ABOUT */
+  .about-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .about-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--amber-glow);
+    border: 2px solid rgba(245,166,35,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .about-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 520px;
+    line-height: 1.7;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  footer a {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  footer a:hover { color: var(--text); }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 auto;
+    max-width: 1000px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    nav { padding: 0 1.25rem; }
+    .hero { padding: 4rem 1.25rem 3rem; }
+    section { padding: 3.5rem 1.25rem; }
+    .about-block { flex-direction: column; gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">Prompt<span>ito</span></a>
+  <a href="https://hotmart.com/es/marketplace/productos/el-kit-del-prompt-perfecto/W106189493Q" class="nav-cta" target="_blank" rel="noopener">Ver el Kit →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">🤖 IA para Todos · México</div>
+  <h1>La IA no es complicada.<br><em>Solo nadie te la<br>había explicado bien.</em></h1>
+  <p class="hero-sub">Recursos, prompts y herramientas para que cualquier persona use la inteligencia artificial sin perder la cabeza.</p>
+  <div class="hero-actions">
+    <a href="#productos" class="btn-primary">Ver productos</a>
+    <a href="https://www.tiktok.com/@iaparatodospt" target="_blank" rel="noopener" class="btn-ghost">Sígueme en TikTok</a>
+  </div>
+  <div class="hero-proof">
+    <span class="proof-dot"></span>
+    <span>Producto activo · ventas en Hotmart</span>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRODUCTOS -->
+<section id="productos">
+  <p class="section-label">Productos</p>
+  <h2>Herramientas que<br>realmente usas</h2>
+  <p class="section-intro">Sin tecnicismos. Sin membresías raras. Pagas una vez y lo usas para siempre.</p>
+
+  <div class="products-grid">
+    <!-- Producto 1 -->
+    <div class="product-card featured">
+      <span class="product-tag tag-live">✦ Disponible ahora</span>
+      <h3>El Kit del Prompt Perfecto</h3>
+      <p>50 prompts listos para copiar y pegar en tu vida diaria. Trabajo, estudio, creatividad. Sin saber nada de IA.</p>
+      <div class="product-price">$9.99 <span>USD · pago único</span></div>
+      <a href="https://hotmart.com/es/marketplace/productos/el-kit-del-prompt-perfecto/W106189493Q" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.9rem; padding:0.7rem 1.5rem;">Conseguir el Kit →</a>
+    </div>
+
+    <!-- Próximo producto -->
+    <div class="product-card">
+      <span class="product-tag tag-soon">Próximamente</span>
+      <h3>Más recursos en camino</h3>
+      <p>Sigo construyendo herramientas para que uses la IA mejor. Sígueme en TikTok o YouTube para ser el primero en enterarte.</p>
+      <a href="https://www.tiktok.com/@iaparatodospt" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.9rem; padding:0.7rem 1.5rem;">Seguir en TikTok</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REDES -->
+<section id="redes">
+  <p class="section-label">Comunidad</p>
+  <h2>Aprende gratis<br>en mis redes</h2>
+  <p class="section-intro">Publico contenido práctico sobre IA para que dejes de sentirte perdido.</p>
+
+  <div class="social-grid">
+    <a href="https://www.tiktok.com/@iaparatodospt" target="_blank" rel="noopener" class="social-card">
+      <div class="social-icon icon-tiktok">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.93a8.18 8.18 0 004.79 1.54V7.03a4.85 4.85 0 01-1.02-.34z" fill="white"/>
+        </svg>
+      </div>
+      <div>
+        <h3>TikTok</h3>
+        <p>@iaparatodospt · Videos cortos de IA práctica</p>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/@iaparatodospt" target="_blank" rel="noopener" class="social-card">
+      <div class="social-icon icon-youtube">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <path d="M23 7s-.3-1.9-1.2-2.7c-1.1-1.2-2.4-1.2-3-1.3C16.4 3 12 3 12 3s-4.4 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5.1 1 7 1 7S.7 9.1.7 11.2v2c0 2.1.3 4.2.3 4.2s.3 1.9 1.2 2.7c1.1 1.2 2.6 1.1 3.3 1.2C7.2 21.4 12 21.4 12 21.4s4.4 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.7 1.2-2.7s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8 3.6-8 3.5z" fill="#ff0000"/>
+        </svg>
+      </div>
+      <div>
+        <h3>YouTube</h3>
+        <p>@iaparatodospt · Tutoriales y guías completas</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="sobre">
+  <p class="section-label">Quién soy</p>
+  <h2>Una persona<br>que ya pasó por ahí</h2>
+
+  <div class="about-block">
+    <div class="about-avatar">PT</div>
+    <div class="about-text">
+      <h3>Promptito · IA para Todos</h3>
+      <p>Soy analista de datos mexicano y llevo tiempo usando IA en el trabajo real. Me di cuenta de que la mayoría de la gente quiere usar estas herramientas pero no sabe por dónde empezar. Así nació Promptito: sin tecnicismos, sin poses, solo cosas que funcionan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom:0.5rem;">
+    <a href="https://www.tiktok.com/@iaparatodospt">TikTok</a> &nbsp;·&nbsp;
+    <a href="https://www.youtube.com/@iaparatodospt">YouTube</a> &nbsp;·&nbsp;
+    <a href="mailto:prompt.tito@gmail.com">Contacto</a>
+  </p>
+  <p>© 2025 Promptito · IA para Todos &mdash; Hecho en México 🇲🇽</p>
+</footer>
+
+</body>
+</html>
