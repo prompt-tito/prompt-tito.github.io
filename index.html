@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promptito — IA para Todos</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --accent: #f5c842;
+    --accent2: #ff6b35;
+    --text: #f0ede8;
+    --muted: #7a7a8c;
+    --border: rgba(245,200,66,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(245,200,66,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,107,53,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    padding: 56px 0 48px;
+  }
+
+  .logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .logo-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .logo-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .logo-name span { color: var(--accent); }
+
+  .tagline {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 6vw, 40px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 40px 0 16px;
+  }
+
+  .product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 12px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .product-card:hover {
+    border-color: rgba(245,200,66,0.3);
+    transform: translateY(-2px);
+  }
+
+  .product-card:hover::before { opacity: 1; }
+
+  .product-tag {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .product-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .product-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .product-price span {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .product-cta {
+    background: var(--accent);
+    color: #0a0a0f;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .coming-card {
+    background: var(--surface);
+    border: 1px dashed rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .coming-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .coming-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(240,237,232,0.3);
+  }
+
+  .social-section {
+    margin: 40px 0 56px;
+    text-align: center;
+  }
+
+  .social-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .social-link {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--muted);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .social-link:hover {
+    border-color: rgba(245,200,66,0.3);
+    color: var(--text);
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px 0 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  footer span { color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  header { animation: fadeUp 0.6s ease both; }
+  .product-card:nth-child(1) { animation: fadeUp 0.6s ease 0.1s both; }
+  .product-card:nth-child(2) { animation: fadeUp 0.6s ease 0.2s both; }
+  .coming-card { animation: fadeUp 0.6s ease 0.3s both; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo-wrap">
+      <div class="logo-icon">🤖</div>
+      <div class="logo-name">Prompt<span>ito</span></div>
+    </div>
+    <p class="tagline">IA para Todos</p>
+    <h1>Herramientas de IA<br>para tu <em>vida real</em></h1>
+    <p class="subtitle">Productos digitales que te ayudan a usar la inteligencia artificial en tu día a día. Sin tecnicismos. Sin cursos. Solo resultados.</p>
+  </header>
+
+  <p class="section-label">Productos disponibles</p>
+
+  <a class="product-card" href="https://pay.hotmart.com/W106189493Q" target="_blank">
+    <p class="product-tag">🔥 Nuevo · Herramienta digital</p>
+    <p class="product-name">El Kit del Prompt Perfecto</p>
+    <p class="product-desc">25 prompts listos para copiar y pegar, organizados por situaciones reales: trabajo, dinero, salud, estudio y familia. Sin tecnicismos.</p>
+    <div class="product-footer">
+      <div class="product-price">$9.99 USD <span>~$190 MXN</span></div>
+      <div class="product-cta">Obtener ahora →</div>
+    </div>
+  </a>
+
+  <div class="coming-card">
+    <p class="coming-label">Próximamente</p>
+    <p class="coming-name">Producto 2 — En desarrollo</p>
+  </div>
+
+  <div class="coming-card">
+    <p class="coming-label">Próximamente</p>
+    <p class="coming-name">Producto 3 — En desarrollo</p>
+  </div>
+
+  <div class="social-section">
+    <p class="social-label">Síguenos</p>
+    <div class="social-links">
+      <a class="social-link" href="https://www.tiktok.com/@iaparatodospt" target="_blank">
+        📱 TikTok
+      </a>
+      <a class="social-link" href="https://www.youtube.com/@iaparatodospt" target="_blank">
+        ▶️ YouTube
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    Hecho con 🤖 por <span>Promptito</span> · IA para Todos
+  </footer>
+</div>
+</body>
+</html>
