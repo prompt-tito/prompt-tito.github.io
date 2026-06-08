@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit del Prompt Perfecto — Promptito</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c26;
+    --accent: #f5c842;
+    --accent2: #ff6b35;
+    --text: #f0ede8;
+    --muted: #7a7a8c;
+    --border: rgba(245,200,66,0.15);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    padding: 48px 0 32px;
+    text-align: center;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+
+  .logo-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+    position: relative;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  /* CATEGORY TABS */
+  .tabs-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+
+  .tab {
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+
+  .tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0a0a0f;
+    font-weight: 500;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 64px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .card:hover { border-color: rgba(245,200,66,0.25); transform: translateY(-2px); }
+  .card:hover::before { opacity: 1; }
+
+  .card-emoji { font-size: 24px; margin-bottom: 10px; display: block; }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .card-tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid rgba(245,200,66,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--surface2);
+    border: none;
+    color: var(--muted);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover { color: var(--text); }
+
+  .modal-category {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+
+  .modal-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .prompt-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .prompt-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .copy-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: #0a0a0f;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    margin-bottom: 8px;
+  }
+
+  .copy-btn:hover { background: #f0d060; transform: scale(1.01); }
+  .copy-btn.copied { background: #2ecc71; color: #fff; }
+
+  .tip-box {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 16px;
+    border-left: 2px solid var(--accent2);
+  }
+
+  .tip-box strong { color: var(--accent2); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  footer p { font-size: 12px; color: var(--muted); }
+  footer span { color: var(--accent); }
+
+  /* SEARCH */
+  .search-wrap {
+    max-width: 400px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 12px 20px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--muted); }
+
+  .count-badge {
+    display: inline-block;
+    background: var(--surface2);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .count-badge span { color: var(--accent); font-weight: 500; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 600px) {
+    .modal { padding: 24px 20px; }
+    h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      Promptito · IA para Todos
+    </div>
+    <h1>El Kit del<br><em>Prompt Perfecto</em></h1>
+    <p class="subtitle">50 prompts listos para usar en tu vida diaria. Sin tecnicismos. Sin rodeos. Solo copia y pega.</p>
+  </header>
+
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Busca un prompt..." oninput="filterCards()">
+  </div>
+
+  <p class="tabs-label">Elige tu situación</p>
+  <div class="tabs" id="tabs"></div>
+
+  <div style="text-align:center; margin-bottom: 24px;">
+    <span class="count-badge">Mostrando <span id="countVisible">0</span> prompts</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <p>Hecho con 🤖 por <span>Promptito</span> · IA para Todos</p>
+    <p style="margin-top:6px;">Comparte esto con alguien que necesite usar mejor la IA</p>
+  </footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <p class="modal-category" id="m-cat"></p>
+    <h2 class="modal-title" id="m-title"></h2>
+    <p class="modal-subtitle" id="m-desc"></p>
+    <p class="prompt-label">Tu prompt listo para usar</p>
+    <div class="prompt-box" id="m-prompt"></div>
+    <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">📋 Copiar prompt</button>
+    <div class="tip-box" id="m-tip"></div>
+  </div>
+</div>
+
+<script>
+const data = [
+  // TRABAJO
+  { cat: "Trabajo", emoji: "💼", title: "Redactar correo profesional", desc: "Para cuando no sabes cómo empezar un correo importante", tag: "Comunicación",
+    prompt: `Actúa como un redactor profesional. Escríbeme un correo formal en español para [DESTINATARIO] sobre [TEMA]. El tono debe ser respetuoso pero directo. El objetivo del correo es [LO QUE QUIERES LOGRAR]. Máximo 150 palabras. Incluye asunto del correo.`,
+    tip: "Reemplaza lo que está entre [ ] con tu situación real. Funciona perfecto para correos a jefes, clientes o proveedores." },
+
+  { cat: "Trabajo", emoji: "📊", title: "Preparar para una entrevista", desc: "Simula una entrevista de trabajo y practica tus respuestas", tag: "Carrera",
+    prompt: `Voy a entrevistarme para el puesto de [PUESTO] en una empresa de [INDUSTRIA]. Hazme 10 preguntas típicas de entrevista para ese puesto, una por una. Después de que responda cada una, dame retroalimentación honesta sobre mi respuesta y cómo mejorarla. Empieza con la primera pregunta.`,
+    tip: "Practica en voz alta después de que Claude te dé retroalimentación. 30 minutos de práctica así valen más que 3 horas leyendo." },
+
+  { cat: "Trabajo", emoji: "🗣️", title: "Pedir aumento de sueldo", desc: "Argumenta tu caso con datos y sin nervios", tag: "Negociación",
+    prompt: `Ayúdame a preparar argumentos para pedir un aumento de sueldo. Mi puesto es [PUESTO], llevo [TIEMPO] en la empresa, actualmente gano [SUELDO] y quiero pedir [SUELDO OBJETIVO]. Mis logros más importantes son: [LOGROS]. Dame un guión de conversación de máximo 2 minutos que sea directo, seguro y profesional. Incluye cómo responder si me dicen que no.`,
+    tip: "El dato más importante que debes incluir son tus logros con números concretos. 'Aumenté ventas 20%' es mil veces más poderoso que 'trabajo mucho'." },
+
+  { cat: "Trabajo", emoji: "📝", title: "Resumir documento largo", desc: "Pega cualquier texto y obtén lo esencial", tag: "Productividad",
+    prompt: `Voy a pegarte un documento/texto largo. Tu trabajo es: 1) Dame un resumen en 5 puntos clave, 2) Dime qué acción debo tomar basándome en esto, 3) Si hay fechas o compromisos importantes, destácalos. Aquí está el texto: [PEGA TU TEXTO AQUÍ]`,
+    tip: "Funciona con contratos, reportes, artículos, juntas grabadas (si las transcribes), políticas de empresa, cualquier cosa." },
+
+  { cat: "Trabajo", emoji: "🎯", title: "Crear presentación de impacto", desc: "Estructura una presentación que convenza", tag: "Comunicación",
+    prompt: `Necesito crear una presentación sobre [TEMA] para [AUDIENCIA]. El objetivo es [LO QUE QUIERO LOGRAR]. Tengo [TIEMPO] para presentar. Dame: 1) Estructura de slides recomendada con título de cada slide, 2) Los 3 puntos más importantes que no pueden faltar, 3) Cómo abrir la presentación para captar atención inmediata, 4) Cómo cerrar para que recuerden mi mensaje.`,
+    tip: "La audiencia lo es todo. Una presentación para tu jefe es totalmente diferente a una para clientes o para tu equipo." },
+
+  // DINERO
+  { cat: "Dinero", emoji: "💰", title: "Hacer un presupuesto mensual", desc: "Organiza tus finanzas personales sin complicarte", tag: "Finanzas",
+    prompt: `Ayúdame a crear un presupuesto mensual realista. Mis ingresos mensuales son: [CANTIDAD]. Mis gastos fijos son: [LISTA]. Mis gastos variables aproximados son: [LISTA]. Tengo deudas de: [DEUDAS SI LAS HAY]. Mi meta financiera es: [META]. Dame un presupuesto claro con categorías, cuánto destinar a cada una, y dónde puedo recortar si es necesario.`,
+    tip: "Sé honesto con tus gastos reales, no los que quisieras tener. Un presupuesto basado en la realidad siempre funciona mejor." },
+
+  { cat: "Dinero", emoji: "💳", title: "Plan para salir de deudas", desc: "Estrategia personalizada para liquidar lo que debes", tag: "Finanzas",
+    prompt: `Tengo las siguientes deudas: [LISTA CADA DEUDA CON MONTO E INTERÉS]. Mi ingreso disponible para pagar deudas es $[CANTIDAD] al mes. Dame un plan mes a mes para salir de todas las deudas lo más rápido posible. Usa el método que sea más eficiente matemáticamente. Explícame por qué ese orden.`,
+    tip: "El método matemáticamente óptimo es el avalanche (pagar primero la deuda con mayor interés). El método bola de nieve (menor monto primero) funciona mejor psicológicamente." },
+
+  { cat: "Dinero", emoji: "📈", title: "Entender conceptos financieros", desc: "Explícame como si tuviera 15 años", tag: "Educación",
+    prompt: `Explícame [CONCEPTO FINANCIERO: ej. CETES, inflación, fondo de emergencia, inversión en índices, etc.] de la siguiente manera: 1) En una oración simple qué es, 2) Con un ejemplo de la vida real en México, 3) Por qué me importa o afecta, 4) Qué puedo hacer al respecto con [CANTIDAD] pesos. Sin términos complicados.`,
+    tip: "Puedes usar este prompt para CETES, Afore, fondos de inversión, dólares, bitcoin, acciones, o cualquier concepto que no entiendas." },
+
+  { cat: "Dinero", emoji: "🏪", title: "Calcular precio de mi producto", desc: "Para emprendedores que no saben cuánto cobrar", tag: "Negocios",
+    prompt: `Vendo [PRODUCTO/SERVICIO]. Mis costos son: materia prima $[X], tiempo [X horas a $X/hora], gastos fijos prorrateados $[X], otros $[X]. Mi competencia cobra entre $[MIN] y $[MAX]. Mi cliente ideal es [DESCRIPCIÓN]. Ayúdame a calcular el precio óptimo que sea competitivo pero rentable. Dame 3 opciones de precio con su justificación.`,
+    tip: "Muchos emprendedores cobran muy barato. Si tus costos más tu ganancia deseada dan un precio 'alto', probablemente es el precio correcto." },
+
+  // ESTUDIO
+  { cat: "Estudio", emoji: "🧠", title: "Aprender cualquier tema rápido", desc: "El método Feynman aplicado con IA", tag: "Aprendizaje",
+    prompt: `Quiero aprender [TEMA] desde cero. Soy [NIVEL: principiante/intermedio]. Tengo [TIEMPO] disponible para estudiarlo. Dame: 1) Los 5 conceptos fundamentales que debo dominar primero, 2) El orden lógico para aprenderlos, 3) Un recurso gratuito para cada concepto, 4) Una pregunta de práctica para saber si entendí cada uno. Después de que estudie, haré preguntas y tú evalúas si realmente lo entendí.`,
+    tip: "El secreto es la última parte: después de estudiar, pídele a Claude que te examine. Enseñar o ser examinado es la forma más rápida de detectar qué no entendiste." },
+
+  { cat: "Estudio", emoji: "📚", title: "Entender un texto difícil", desc: "Pega el texto y recibe una explicación clara", tag: "Comprensión",
+    prompt: `Aquí hay un texto que no entiendo bien: [PEGA EL TEXTO]. Necesito que: 1) Me expliques la idea principal en 2 oraciones simples, 2) Definas los 3 términos más difíciles con ejemplos cotidianos, 3) Me digas por qué es importante entender esto, 4) Me hagas 3 preguntas para verificar que lo entendí.`,
+    tip: "Funciona con textos legales, médicos, académicos, contratos, noticias complicadas, cualquier cosa." },
+
+  { cat: "Estudio", emoji: "✍️", title: "Mejorar mi redacción", desc: "Convierte tu texto en algo claro y profesional", tag: "Escritura",
+    prompt: `Aquí está mi texto: [TU TEXTO]. Por favor: 1) Corrígelo en gramática y ortografía, 2) Mejora la claridad sin cambiar mi voz ni mi intención, 3) Señala qué errores cometí para que no los repita, 4) Dame la versión final lista para usar. El tono debe ser [FORMAL/INFORMAL/ACADÉMICO].`,
+    tip: "Siempre especifica el tono. Un texto para WhatsApp necesita tono muy diferente a un ensayo universitario." },
+
+  { cat: "Estudio", emoji: "🎓", title: "Preparar examen en poco tiempo", desc: "El resumen de emergencia que salva vidas", tag: "Estudio",
+    prompt: `Tengo examen de [MATERIA/TEMA] en [TIEMPO]. Los temas que entran son: [LISTA DE TEMAS]. Dame: 1) Los 10 conceptos más importantes que casi seguro van a preguntar, 2) Una frase para recordar cada uno, 3) Los errores más comunes que cometen los estudiantes en este examen, 4) 5 preguntas de práctica con sus respuestas.`,
+    tip: "Usa esto la noche anterior. No reemplaza estudiar bien, pero optimiza lo que puedes memorizar en poco tiempo." },
+
+  // SALUD
+  { cat: "Salud", emoji: "🥗", title: "Plan de alimentación simple", desc: "Come mejor sin gastar más ni complicarte", tag: "Nutrición",
+    prompt: `Quiero mejorar mi alimentación. Mi contexto: tengo [TIEMPO] para cocinar al día, mi presupuesto semanal para comida es $[CANTIDAD] MXN, vivo en [CIUDAD/REGIÓN DE MÉXICO], mi objetivo es [BAJAR PESO/MÁS ENERGÍA/MÚSCULO/SALUD GENERAL]. Dame un plan de comidas para 5 días con ingredientes fáciles de conseguir en México, sin contar calorías de forma obsesiva.`,
+    tip: "Agrega restricciones si las tienes: vegetariano, intolerancia a la lactosa, no te gusta el picante, etc." },
+
+  { cat: "Salud", emoji: "🏃", title: "Rutina de ejercicio en casa", desc: "Sin gym, sin equipos, sin excusas", tag: "Ejercicio",
+    prompt: `Quiero empezar a ejercitarme en casa. Mi nivel es [PRINCIPIANTE/INTERMEDIO]. Tengo [TIEMPO] disponibles al día, [X] días por semana. Mi objetivo es [BAJAR PESO/GANAR MÚSCULO/RESISTENCIA/FLEXIBILIDAD]. No tengo equipos/tengo [EQUIPOS DISPONIBLES]. Dame un plan de 4 semanas progresivo con ejercicios específicos, series, repeticiones y tiempos de descanso.`,
+    tip: "Lo más importante es la consistencia. Una rutina de 20 minutos que haces todos los días gana a una de 2 horas que abandonas." },
+
+  { cat: "Salud", emoji: "😴", title: "Mejorar mi sueño", desc: "Duerme mejor con cambios concretos y simples", tag: "Bienestar",
+    prompt: `Tengo problemas para [DORMIR/DESCANSAR BIEN/DESPERTAR CANSADO]. Mi rutina actual es: me acuesto a las [HORA], me levanto a las [HORA], uso el celular [SÍ/NO] antes de dormir, tomo café/alcohol [CANTIDAD Y HORARIO]. Dame 5 cambios concretos y simples que puedo empezar a implementar esta semana, en orden de impacto.`,
+    tip: "El consejo con mayor impacto casi siempre es la hora consistente de dormir y despertar, incluso fines de semana." },
+
+  { cat: "Salud", emoji: "🧘", title: "Manejar el estrés y ansiedad", desc: "Técnicas prácticas basadas en ciencia", tag: "Mental",
+    prompt: `Últimamente me siento [DESCRIBE CÓMO TE SIENTES]. Los factores que creo que lo causan son [LISTA]. Tengo [TIEMPO] libre al día para hacer algo al respecto. Dame: 1) 3 técnicas que puedo hacer ahora mismo en menos de 5 minutos, 2) Un hábito que puedo construir esta semana, 3) Señales de alerta que indican que necesito ayuda profesional. Sin filosofía, solo cosas prácticas.`,
+    tip: "Este prompt no reemplaza a un profesional de salud mental. Si los síntomas son intensos o duraderos, busca apoyo." },
+
+  // FAMILIA / HOGAR
+  { cat: "Familia", emoji: "🏠", title: "Organizar el hogar con sistema", desc: "Que la casa se limpie sola (casi)", tag: "Organización",
+    prompt: `Vivo [SOLO/CON PAREJA/CON HIJOS/CON FAMILIA]. Nuestra casa tiene [NÚMERO] de habitaciones. El problema principal es [DESCRIBE EL CAOS]. Tenemos [TIEMPO] disponible entre semana y [TIEMPO] los fines de semana para limpieza. Dame un sistema de mantenimiento semanal dividido por días, con tareas específicas de máximo 20 minutos diarias, para que la casa esté siempre razonablemente ordenada.`,
+    tip: "Asigna tareas específicas a cada persona en el hogar. Un sistema que depende de una sola persona siempre colapsa." },
+
+  { cat: "Familia", emoji: "👶", title: "Actividades con niños sin pantallas", desc: "Ideas para entretener sin recurrir al celular", tag: "Crianza",
+    prompt: `Tengo [NÚMERO] hijo(s) de [EDADES] años. Necesito actividades para [DENTRO DE CASA/FUERA DE CASA/AMBAS] para [FIN DE SEMANA/VACACIONES/TARDE ABURRIDA]. Mi presupuesto es [CANTIDAD O CERO]. Dame 10 actividades específicas con instrucciones simples de cómo hacerlas, ordenadas de más a menos esfuerzo de mi parte.`,
+    tip: "Especifica los intereses del niño para resultados más personalizados: le gustan los dinosaurios, el arte, los coches, etc." },
+
+  { cat: "Familia", emoji: "🍽️", title: "Qué cocinar con lo que tengo", desc: "Recetas con los ingredientes de tu refri", tag: "Cocina",
+    prompt: `Tengo en casa estos ingredientes: [LISTA LO QUE TIENES]. Dame 3 recetas diferentes que pueda hacer con lo que tengo, sin ir al súper. Para cada receta: nombre, ingredientes exactos que usaré, instrucciones en pasos simples, tiempo de preparación. Mis preferencias: [GUSTOS O RESTRICCIONES].`,
+    tip: "Siempre menciona si tienes restricciones: sin gluten, vegetariano, muy picante, sin cebolla, lo que sea." },
+
+  // IA Y TECNOLOGÍA
+  { cat: "IA y Tech", emoji: "🤖", title: "Aprender a usar ChatGPT de verdad", desc: "El prompt para entender la IA en 10 minutos", tag: "IA",
+    prompt: `Explícame cómo usar ChatGPT de forma efectiva para [MI CASO DE USO ESPECÍFICO: trabajo, estudio, negocios, etc.]. Soy [PRINCIPIANTE/INTERMEDIO]. Dame: 1) Los 5 errores más comunes al usar IA, 2) La estructura de un buen prompt explicada con ejemplo, 3) 3 prompts listos para mi caso específico que pueda usar hoy mismo, 4) Qué cosas NO debería pedirle a la IA.`,
+    tip: "La IA es una herramienta. Como todo martillo, puedes usarlo para construir o para romper. La diferencia está en cómo preguntas." },
+
+  { cat: "IA y Tech", emoji: "💻", title: "Ayuda con Excel sin saber fórmulas", desc: "Resuelve problemas de Excel con lenguaje normal", tag: "Productividad",
+    prompt: `Tengo una hoja de Excel con los siguientes datos: [DESCRIBE QUÉ DATOS TIENES]. Necesito [QUÉ QUIERES HACER: calcular, filtrar, ordenar, hacer gráfica, etc.]. No sé bien las fórmulas. Dame instrucciones paso a paso como si nunca hubiera usado Excel avanzado, y si hay una fórmula involucrada, escríbela lista para copiar y pegar con explicación de qué hace cada parte.`,
+    tip: "También puedes pegar directamente los datos en texto y pedirle que te ayude a analizarlos sin necesitar Excel." },
+
+  { cat: "IA y Tech", emoji: "📱", title: "Crear contenido para redes sociales", desc: "Posts, captions y reels con estrategia", tag: "Redes",
+    prompt: `Tengo una cuenta de [RED SOCIAL] sobre [TEMA]. Mi audiencia es [DESCRIPCIÓN]. Quiero publicar sobre [IDEA O TEMA ESPECÍFICO]. Dame: 1) 3 versiones del caption: una emotiva, una informativa y una de humor, 2) 5 hashtags relevantes, 3) La primera oración gancho que detenga el scroll, 4) Una idea para video corto (reel/tiktok) sobre este mismo tema.`,
+    tip: "El gancho es todo en redes. Si los primeros 3 segundos no atrapan, nadie ve el resto. Pídele siempre que te dé varias opciones de gancho." },
+
+  { cat: "IA y Tech", emoji: "🔍", title: "Buscar información sin perderte", desc: "Investiga cualquier tema como experto", tag: "Investigación",
+    prompt: `Necesito investigar [TEMA] para [PROPÓSITO]. Ayúdame a: 1) Identificar las 5 preguntas clave que debo responder sobre este tema, 2) Decirme qué tipo de fuentes son más confiables para esto, 3) Darme un resumen de lo que se sabe actualmente, 4) Señalarme qué aspectos son controversiales o inciertos, 5) Recomendarme cómo organizar la información que vaya encontrando.`,
+    tip: "Claude tiene conocimiento hasta cierta fecha. Para noticias muy recientes, usa Google News y luego trae la información aquí para analizarla." },
+];
+
+const categories = ["Todos", ...new Set(data.map(d => d.cat))];
+let currentCat = "Todos";
+let currentPrompt = "";
+
+function renderTabs() {
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = categories.map(c =>
+    `<button class="tab ${c === currentCat ? 'active' : ''}" onclick="filterCat('${c}')">${c}</button>`
+  ).join("");
+}
+
+function filterCat(cat) {
+  currentCat = cat;
+  renderTabs();
+  filterCards();
+}
+
+function filterCards() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const grid = document.getElementById("grid");
+  const filtered = data.filter(d => {
+    const matchCat = currentCat === "Todos" || d.cat === currentCat;
+    const matchQ = !q || d.title.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q) || d.cat.toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  grid.innerHTML = filtered.map((d, i) => `
+    <div class="card" onclick="openModal(${data.indexOf(d)})" style="animation: fadeIn 0.3s ease ${i * 0.04}s both;">
+      <span class="card-emoji">${d.emoji}</span>
+      <p class="card-title">${d.title}</p>
+      <p class="card-desc">${d.desc}</p>
+      <span class="card-tag">${d.cat} · ${d.tag}</span>
+    </div>
+  `).join("");
+
+  document.getElementById("countVisible").textContent = filtered.length;
+}
+
+function openModal(i) {
+  const d = data[i];
+  currentPrompt = d.prompt;
+  document.getElementById("m-cat").textContent = `${d.cat} · ${d.tag}`;
+  document.getElementById("m-title").textContent = `${d.emoji} ${d.title}`;
+  document.getElementById("m-desc").textContent = d.desc;
+  document.getElementById("m-prompt").textContent = d.prompt;
+  document.getElementById("m-tip").innerHTML = `<strong>💡 Tip:</strong> ${d.tip}`;
+  document.getElementById("copyBtn").textContent = "📋 Copiar prompt";
+  document.getElementById("copyBtn").classList.remove("copied");
+  document.getElementById("modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById("modal")) closeModalDirect();
+}
+
+function closeModalDirect() {
+  document.getElementById("modal").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function copyPrompt() {
+  navigator.clipboard.writeText(currentPrompt).then(() => {
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "✅ ¡Copiado!";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "📋 Copiar prompt";
+      btn.classList.remove("copied");
+    }, 2000);
+  });
+}
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModalDirect(); });
+
+const style = document.createElement("style");
+style.textContent = `@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }`;
+document.head.appendChild(style);
+
+renderTabs();
+filterCards();
+</script>
+</body>
+</html>
